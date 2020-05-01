@@ -1,15 +1,6 @@
-const {
-  login,
-  signUp,
-  getNewAccessToken,
-} = require('../controllers/auth.controllers');
+const { login, signUp, getNewAccessToken } = require('../controllers/auth.controllers');
 const authMiddlewares = require('../middlewares/auth.middlewares');
-const {
-  getPortfolio,
-  setPortfolio,
-  patchPortfolio,
-  deletePortfolio,
-} = require('../controllers/portfolio.controllers');
+const { getPortfolio, setPortfolio, patchPortfolio, deletePortfolio } = require('../controllers/portfolio.controllers');
 module.exports = app => {
   app.post(
     '/users',
@@ -22,11 +13,7 @@ module.exports = app => {
 
   app.post('/users/login', login);
 
-  app.get(
-    '/users/me/access-token',
-    authMiddlewares.verifySession,
-    getNewAccessToken
-  );
+  app.get('/users/me/access-token', authMiddlewares.verifySession, getNewAccessToken);
 
   app.get('/portfolio', authMiddlewares.authenticate, getPortfolio);
 

@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
 const mongoUri = require('../config').environment.mongoUri;
 
-mongoose.Promise = global.Promise;
-mongoose
-  .connect(mongoUri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log('Connect to mongoose data base.'))
-  .catch(err => console.log(err));
+module.exports = () => {
+  return new Promise((resolve, reject) => {
+    mongoose.Promise = global.Promise;
+    mongoose.set('debug', true);
 
-module.exports = {
-  mongoose,
+    mongoose.connection
+      .on('error', error => reject(error))
+      .on('close', () => console.log('Database connection closed.'))
+      .on('open', () => resolve(mongoose.connections[0]));
+
+    mongoose.connect(mongoUri, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    });
+  });
 };

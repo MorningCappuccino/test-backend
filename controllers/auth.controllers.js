@@ -29,6 +29,10 @@ const login = (req, res) => {
   let password = req.body.password;
   User.findByCredentials(email, password)
     .then(user => {
+      if (user.error) {
+        res.status(401).send(user);
+        return;
+      }
       return user
         .createSession()
         .then(refreshToken => {

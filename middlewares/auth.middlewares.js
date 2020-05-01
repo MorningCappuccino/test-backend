@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
-const User = require('../db/models/user.module').User;
+const { User } = require('../db/models/user.module');
 
-let authenticate = (req, res, next) => {
-  let token = req.header('x-access-token');
+const authenticate = (req, res, next) => {
+  const token = req.header('x-access-token');
+  console.log('#get header x-access-token:', token);
 
   jwt.verify(token, User.getJWTSecret(), (err, decoded) => {
     if (err) {
@@ -14,16 +15,15 @@ let authenticate = (req, res, next) => {
   });
 };
 
-let verifySession = (req, res, next) => {
-  let refreshToken = req.header('x-refresh-token');
-  let _id = req.header('_id');
+const verifySession = (req, res, next) => {
+  const refreshToken = req.header('x-refresh-token');
+  const _id = req.header('_id');
 
   User.findByIdAndToken(_id, refreshToken)
     .then(user => {
       if (!user) {
         return Promise.reject({
-          error:
-            'User not found. Make sure that the refresh token and user id are correct',
+          error: 'User not found. Make sure that the refresh token and user id are correct'
         });
       }
       req.user_id = user._id;
@@ -44,7 +44,7 @@ let verifySession = (req, res, next) => {
         next();
       } else {
         return Promise.reject({
-          error: 'Refresh token has expired or the session is invalid',
+          error: 'Refresh token has expired or the session is invalid'
         });
       }
     })
@@ -55,5 +55,5 @@ let verifySession = (req, res, next) => {
 
 module.exports = {
   authenticate,
-  verifySession,
+  verifySession
 };

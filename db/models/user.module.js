@@ -11,30 +11,30 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 1,
     trim: true,
-    unique: true,
+    unique: true
   },
   role: {
     type: String,
     required: true,
-    minlength: 1,
+    minlength: 1
   },
   password: {
     type: String,
     required: true,
-    minlength: 8,
+    minlength: 8
   },
   sessions: [
     {
       token: {
         type: String,
-        required: true,
+        required: true
       },
       expiresAt: {
         type: Number,
-        required: true,
-      },
-    },
-  ],
+        required: true
+      }
+    }
+  ]
 });
 
 // *** Instance methods ***
@@ -96,6 +96,7 @@ UserSchema.methods.createSession = function() {
 /* MODEL METHODS (static methods) */
 
 UserSchema.statics.getJWTSecret = () => {
+  console.log('##jwtSecret: ', jwtSecret);
   return jwtSecret;
 };
 
@@ -103,7 +104,7 @@ UserSchema.statics.findByIdAndToken = function(_id, token) {
   const User = this;
   return User.findOne({
     _id,
-    'sessions.token': token,
+    'sessions.token': token
   });
 };
 
@@ -111,7 +112,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
   let User = this;
   return User.findOne({ email }).then(user => {
     if (!user) {
-      return Promise.reject('error');
+      return Promise.resolve({ error: 'Not Found', errorMessage: `User with email "${email}" not found` });
     } else {
       return new Promise((resolve, reject) => {
         bcrypt.compare(password, user.password, (err, res) => {

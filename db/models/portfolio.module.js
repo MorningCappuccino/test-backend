@@ -5,17 +5,17 @@ const portfolioSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 1,
-    trim: true,
+    trim: true
   },
   photos: {
     type: String,
     required: true,
     minlength: 1,
-    trim: true,
-  },
+    trim: true
+  }
 });
 const portfolio = mongoose.model('Portfolio', portfolioSchema);
 
 module.exports = {
-  portfolio,
+  portfolio
 };

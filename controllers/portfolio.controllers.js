@@ -11,7 +11,7 @@ const setPortfolio = (req, res) => {
   let photos = req.body.photos;
   let newPortfolio = new Portfolio({
     title,
-    photos,
+    photos
   });
   newPortfolio
     .save()
@@ -45,5 +45,5 @@ module.exports = {
   getPortfolio,
   setPortfolio,
   patchPortfolio,
-  deletePortfolio,
+  deletePortfolio
 };
