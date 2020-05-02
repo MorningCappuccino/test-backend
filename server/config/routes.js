@@ -1,11 +1,12 @@
 const { login, signUp, getNewAccessToken } = require('../controllers/auth.controllers');
 const authMiddlewares = require('../middlewares/auth.middlewares');
 const { getPortfolio, setPortfolio, patchPortfolio, deletePortfolio } = require('../controllers/portfolio.controllers');
+
 module.exports = app => {
   app.post(
     '/users',
-    (require, response, next) => {
-      require.body.role = 'user';
+    (request, response, next) => {
+      request.body.role = 'user';
       next();
     },
     signUp

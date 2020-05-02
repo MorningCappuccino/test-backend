@@ -1,0 +1,36 @@
+{
+    "env": {
+        "browser": true,
+        // "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        // "airbnb",
+        "prettier",
+        "plugin:prettier/recommended",
+        "prettier/react",
+        "eslint:recommended",
+        "plugin:node/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    // "parser": "babel-eslint",
+    "plugins": [
+        "node",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "printWidth": 120
+            }
+        ],
+        "no-console": 0,
+        "allowShortCircuit": 0
+    }
+}

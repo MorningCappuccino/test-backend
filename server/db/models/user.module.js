@@ -3,7 +3,7 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const jwtSecret = require('../../config/environment').jwtSecret;
+const { jwtSecret } = require('../../config/environment');
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -50,6 +50,7 @@ UserSchema.methods.generateAccessAuthToken = function() {
   const user = this;
   return new Promise((resolve, reject) => {
     jwt.sign(
+      // eslint-disable-next-line no-underscore-dangle
       { _id: user._id.toHexString(), email: user.email, role: user.role },
       jwtSecret,
       { expiresIn: '15m' },

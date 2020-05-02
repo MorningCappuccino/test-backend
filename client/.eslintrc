@@ -1,34 +1,36 @@
 {
     "env": {
         "browser": true,
-        // "commonjs": true,
-        "es6": true,
-        "node": true
+        "es6": true
     },
     "extends": [
-        // "airbnb",
+        "airbnb",
         "prettier",
         "prettier/react",
         "eslint:recommended",
-        "plugin:node/recommended"
+        "plugin:react/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2020,
-        "sourceType": "module"
+        // "sourceType": "module",
+        "ecmaFeatures": {
+            "globalReturn": true,
+            "experimentalObjectRestSpread": true
+        }
     },
-    // "parser": "babel-eslint",
+    "parser": "babel-eslint",
     "plugins": [
-        "node",
-        "prettier"
+        "prettier",
+        "react"
     ],
     "rules": {
+        "react/destructuring-assignment": 1,
         "prettier/prettier": [
             "error",
             {
                 "singleQuote": true,
                 "printWidth": 120
             }
-        ],
-        "no-console": 0
+        ]
     }
 }

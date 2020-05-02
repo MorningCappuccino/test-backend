@@ -1,8 +1,8 @@
-const User = require('../db/models/user.module').User;
+const { User } = require('../db/models/user.module');
 
 const signUp = (req, res) => {
-  let body = req.body;
-  let newUser = new User(body);
+  const { body } = req;
+  const newUser = new User(body);
   newUser
     .save()
     .then(() => {
@@ -25,29 +25,28 @@ const signUp = (req, res) => {
 };
 
 const login = (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
+  const { email, password } = req.body;
   User.findByCredentials(email, password)
     .then(user => {
       if (user.error) {
         res.status(401).send(user);
-        return;
-      }
-      return user
-        .createSession()
-        .then(refreshToken => {
-          return user.generateAccessAuthToken().then(accessToken => {
-            console.log(accessToken);
-            console.log(refreshToken);
-            return { accessToken, refreshToken };
+      } else {
+        user
+          .createSession()
+          .then(refreshToken => {
+            return user.generateAccessAuthToken().then(accessToken => {
+              console.log(accessToken);
+              console.log(refreshToken);
+              return { accessToken, refreshToken };
+            });
+          })
+          .then(authTokens => {
+            res
+              .header('x-refresh-token', authTokens.refreshToken)
+              .header('x-access-token', authTokens.accessToken)
+              .send(user);
           });
-        })
-        .then(authTokens => {
-          res
-            .header('x-refresh-token', authTokens.refreshToken)
-            .header('x-access-token', authTokens.accessToken)
-            .send(user);
-        });
+      }
     })
     .catch(err => {
       res.status(400).send(err);
